@@ -6,3 +6,11 @@
 .grade-resources a:nth-child(2) .material-symbols-outlined{color:#ffd166}
 .grade-resources a:nth-child(3) .material-symbols-outlined{color:#9ce37d}
 .grade-resources a:nth-child(4) .material-symbols-outlined{color:#ff9c7a}
+
+/* Frame Grade 6 units so their included modules read as one group. */
+.g6 .unit{margin-block:.8rem;padding:.8rem;border:1px solid var(--unit-accent);border-left:3px solid var(--unit-accent);border-radius:.5rem;background:var(--unit-wash);box-shadow:0 2px 8px #10243d12}
+.g6 #g6q1 .unit{--unit-accent:#356fa5;--unit-wash:#f1f6fb}
+.g6 #g6q2 .unit{--unit-accent:#648953;--unit-wash:#f3f8ef}
+.g6 #g6q3 .unit{--unit-accent:#b88724;--unit-wash:#fbf7eb}
+.g6 #g6q4 .unit{--unit-accent:#168074;--unit-wash:#eff8f6}
+.g6 .unit>h2{border-left:.28rem solid var(--unit-accent);border-radius:.2rem;padding:.34rem .55rem;background:#fffdf6;box-shadow:3px 3px 0 #10243d18}
