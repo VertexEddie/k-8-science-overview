@@ -22,3 +22,13 @@
 .g6 .unit-earth{background-image:repeating-radial-gradient(ellipse at 0 100%,transparent 0 14px,#16807420 15px 16px,transparent 17px 28px);background-size:52px 32px}
 .g6 .unit-weather{background-image:radial-gradient(ellipse at 20% 35%,#b8872415 0 15px,transparent 16px),radial-gradient(ellipse at 75% 65%,#b8872412 0 18px,transparent 19px);background-size:70px 42px}
 .g6 .unit-engineering{background-image:linear-gradient(#356fa515 1px,transparent 1px),linear-gradient(90deg,#356fa515 1px,transparent 1px);background-size:18px 18px}
+
+/* Quiet, repeated Grade 6 topic motifs. */
+.g6 .unit-safety{background-image:url("./patterns/lab-safety.svg");background-repeat:repeat;background-size:180px 78px}
+.g6 .unit-space{background-image:url("./patterns/solar-system.svg");background-repeat:repeat;background-size:180px 78px}
+.g6 .unit-life{background-image:url("./patterns/living-systems.svg");background-repeat:repeat;background-size:180px 78px}
+.g6 .unit-ecosystem-relations{background-image:url("./patterns/ecosystem-relations.svg");background-repeat:repeat;background-size:180px 78px}
+.g6 .unit-ecosystem-dynamics{background-image:url("./patterns/ecosystem-dynamics.svg");background-repeat:repeat;background-size:180px 78px}
+.g6 .unit-earth{background-image:url("./patterns/air-water.svg");background-repeat:repeat;background-size:180px 78px}
+.g6 .unit-weather{background-image:url("./patterns/weather-climate.svg");background-repeat:repeat;background-size:180px 78px}
+.g6 .unit-engineering{background-image:url("./patterns/engineering.svg");background-repeat:repeat;background-size:180px 78px}
