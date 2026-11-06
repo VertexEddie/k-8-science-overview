@@ -14,3 +14,11 @@
 .g6 #g6q3 .unit{--unit-accent:#b88724;--unit-wash:#fbf7eb}
 .g6 #g6q4 .unit{--unit-accent:#168074;--unit-wash:#eff8f6}
 .g6 .unit>h2{border-left:.28rem solid var(--unit-accent);border-radius:.2rem;padding:.34rem .55rem;background:#fffdf6;box-shadow:3px 3px 0 #10243d18}
+
+/* Topic patterns keep the blue unit frame while hinting at each unit's subject. */
+.g6 .unit-safety{background-image:repeating-linear-gradient(135deg,transparent 0 12px,#d9b54820 12px 20px)}
+.g6 .unit-space{background-image:radial-gradient(circle,#356fa533 1px,transparent 1.5px),radial-gradient(circle,#356fa522 1px,transparent 1.5px);background-position:0 0,10px 11px;background-size:22px 22px}
+.g6 .unit-life{background-image:radial-gradient(ellipse at 0 50%,transparent 43%,#64895322 44% 47%,transparent 48%),radial-gradient(ellipse at 100% 50%,transparent 43%,#64895322 44% 47%,transparent 48%);background-size:44px 28px}
+.g6 .unit-earth{background-image:repeating-radial-gradient(ellipse at 0 100%,transparent 0 14px,#16807420 15px 16px,transparent 17px 28px);background-size:52px 32px}
+.g6 .unit-weather{background-image:radial-gradient(ellipse at 20% 35%,#b8872415 0 15px,transparent 16px),radial-gradient(ellipse at 75% 65%,#b8872412 0 18px,transparent 19px);background-size:70px 42px}
+.g6 .unit-engineering{background-image:linear-gradient(#356fa515 1px,transparent 1px),linear-gradient(90deg,#356fa515 1px,transparent 1px);background-size:18px 18px}
