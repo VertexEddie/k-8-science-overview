@@ -483,7 +483,7 @@
     if (resourcePage.dataset.resourceKey === resourceKey) return;
     resourcePage.dataset.resourceKey = resourceKey;
     const urls = {
-      pacing: `https://docs.google.com/spreadsheets/d/1u6pRTJXXx3qgLb7qBQ6iXDo6XjYNA0kCdXw_U8dNrag/preview?gid=${({6:'84160990',7:'934147095',8:'1937787038'})[route.grade]}&rm=minimal`,
+      pacing: `https://docs.google.com/spreadsheets/d/1u6pRTJXXx3qgLb7qBQ6iXDo6XjYNA0kCdXw_U8dNrag/preview?gid=${({6:'84160990',7:'934147095',8:'1937787038'})[route.grade]}&rm=minimal#gid=${({6:'84160990',7:'934147095',8:'1937787038'})[route.grade]}`,
       directory: `https://legacyaz.schoology.com/course/7836596606/materials?f=${({6:'1040451133',7:'1040451441',8:'1040758396'})[route.grade]}`,
       reteach: `https://legacyaz.schoology.com/page/${({6:'8559988197',7:'8559989915',8:'8562135902'})[route.grade]}`
     };
