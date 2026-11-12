@@ -154,3 +154,27 @@
 .schedule-day{height:3.75rem}
 .schedule-day span{font-size:.44rem}
 @media(max-width:760px){.schedule-masthead{padding-block:.26rem}.schedule-status-row .today-tracker{min-height:2.5rem}}
+
+/* More of the calendar fits in the first view. */
+.schedule-masthead{gap:.1rem .6rem;padding-block:.1rem}
+.schedule-masthead h1{font-size:1.4rem;line-height:1}
+.schedule-masthead .schedule-switcher{gap:.16rem}
+.schedule-masthead .schedule-switcher button{padding:.24rem .34rem;font-size:.56rem}
+.schedule-masthead .grade-resources{gap:.2rem}
+.schedule-masthead .grade-resources a{min-height:1.55rem;padding:.16rem .32rem;font-size:.56rem}
+.schedule-masthead .grade-resources .material-symbols-outlined{flex-basis:.82rem;font-size:.82rem}
+.schedule-status-row{gap:.35rem}
+.schedule-status-row .today-tracker{min-height:2.25rem;padding:.24rem .55rem;gap:.35rem}
+.today-tracker strong{font-size:.78rem}
+.selected-day-status{padding:.22rem .45rem}
+.selected-day-status strong{font-size:.76rem}
+.selected-day-status span{font-size:.62rem}
+.schedule-tools{margin-block:0 .1rem}
+.schedule-tools .admin-toggle{padding:.2rem .4rem;font-size:.6rem}
+.schedule-tools .admin-toggle .material-symbols-outlined{font-size:.78rem}
+.schedule-timeline{margin-block:.25rem;padding:.4rem;gap:.3rem}
+.schedule-heading h2{font-size:.95rem}
+.schedule-key{margin-top:.05rem;font-size:.58rem}
+.schedule-view-toggle{margin-top:.1rem}
+.schedule-view-toggle button{padding:.18rem .34rem;font-size:.58rem}
+.schedule-timeline .calendar-weekdays span{padding-block:.2rem}
