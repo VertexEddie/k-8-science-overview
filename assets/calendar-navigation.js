@@ -300,9 +300,221 @@
     masthead?.remove();
   }
 
+  const resourceLabels = { schedule: 'Development Schedule', pacing: 'Pacing Guide', directory: 'Schoology Directory', reteach: 'Reteach & Review' };
+  const readScheduleRoute = () => {
+    const query = new URLSearchParams(window.location.hash.split('?')[1] || '');
+    const requestedGrade = query.get('grade');
+    return { grade: ['6','7','8'].includes(requestedGrade) ? requestedGrade : '7', view: Object.hasOwn(resourceLabels, query.get('view')) ? query.get('view') : 'schedule', module: query.get('module') };
+  };
+  const scheduleResourceHref = (grade, view, module) => `#all-grades-calendar?grade=${grade}&view=${view}${module ? `&module=${module}` : ''}`;
+
+  function installIntegratedResourceLinks() {
+    const course = document.querySelector('.course-layout.g6:not(.calendar-layout), .course-layout.g7:not(.calendar-layout), .course-layout.g8:not(.calendar-layout), #g8.course-layout:not(.calendar-layout)');
+    const resources = course?.querySelector('.course-nav .grade-resources');
+    if (!course || !resources) return;
+    const grade = course.classList.contains('g6') ? '6' : course.classList.contains('g7') ? '7' : '8';
+    resources.querySelectorAll('a').forEach(link => {
+      const label = link.textContent.trim().toLowerCase();
+      const view = label.includes('development schedule') ? 'schedule' : label.includes('pacing guide') ? 'pacing' : label.includes('schoology directory') ? 'directory' : label.includes('reteach') ? 'reteach' : null;
+      if (!view) return;
+      link.href = scheduleResourceHref(view === 'schedule' ? '7' : grade, view);
+      link.removeAttribute('target');
+      link.removeAttribute('rel');
+      link.classList.remove('is-active');
+      link.removeAttribute('aria-current');
+    });
+  }
+
+  function makeScheduleGradePicker(grade) {
+    const picker = document.createElement('div');
+    picker.className = 'grade-picker is-current';
+    picker.setAttribute('role', 'tablist');
+    picker.setAttribute('aria-label', 'Science course grades');
+    const label = document.createElement('p');
+    label.className = 'grade-picker-label';
+    label.textContent = 'Grades 6–8';
+    const buttons = document.createElement('div');
+    buttons.className = 'grade-buttons';
+    buttons.setAttribute('role', 'tablist');
+    buttons.setAttribute('aria-label', 'Science course grades');
+    ['6','7','8'].forEach(value => {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.setAttribute('role', 'tab');
+      button.setAttribute('aria-selected', String(value === grade));
+      button.textContent = `Grade ${value}`;
+      button.addEventListener('click', () => { window.location.hash = scheduleResourceHref(value, readScheduleRoute().view); });
+      buttons.append(button);
+    });
+    picker.append(label, buttons);
+    return picker;
+  }
+
+  function makeScheduleResourceNav(grade, view) {
+    const nav = document.createElement('nav');
+    nav.className = 'grade-resources';
+    nav.setAttribute('aria-label', 'Grade resources');
+    [['schedule','calendar_month'],['pacing','event_note'],['directory','folder_open'],['reteach','co_present']].forEach(([key, icon]) => {
+      const link = document.createElement('a');
+      link.href = scheduleResourceHref(grade, key);
+      link.className = key === view ? 'is-active' : '';
+      if (key === view) link.setAttribute('aria-current', 'page');
+      const symbol = document.createElement('span');
+      symbol.className = 'material-symbols-outlined';
+      symbol.setAttribute('aria-hidden', 'true');
+      symbol.textContent = icon;
+      link.append(symbol, document.createTextNode(resourceLabels[key]));
+      nav.append(link);
+    });
+    return nav;
+  }
+
+  function makeScheduleModuleNav(main, grade) {
+    const rows = [...main.querySelectorAll('.completion-table .completion-row:not(.completion-header)')].filter(row => row.classList.contains(`grade-${grade}`));
+    if (!rows.length) return null;
+    const nav = document.createElement('nav');
+    nav.className = 'course-nav-links';
+    nav.setAttribute('aria-label', `Grade ${grade} course modules`);
+    const groups = document.createElement('div');
+    groups.className = 'quarter-disclosures module-quarter-disclosures';
+    const heading = document.createElement('span');
+    heading.className = 'nav-section';
+    heading.textContent = 'Course modules';
+    groups.append(heading);
+    ['1','2','3','4'].forEach(quarter => {
+      const quarterRows = rows.filter(row => row.classList.contains(`q${quarter}`));
+      if (!quarterRows.length) return;
+      const section = document.createElement('section');
+      section.className = 'quarter-disclosure';
+      const panelId = `schedule-grade-${grade}-q${quarter}-modules`;
+      const toggle = document.createElement('button');
+      toggle.type = 'button';
+      toggle.className = 'quarter-toggle';
+      toggle.setAttribute('aria-expanded', 'false');
+      toggle.setAttribute('aria-controls', panelId);
+      const title = document.createElement('span');
+      title.textContent = `Quarter ${quarter}`;
+      const arrow = document.createElement('span');
+      arrow.className = 'material-symbols-outlined quarter-chevron';
+      arrow.setAttribute('aria-hidden', 'true');
+      arrow.textContent = 'expand_more';
+      toggle.append(title, arrow);
+      const panel = document.createElement('div');
+      panel.className = 'quarter-panel';
+      panel.id = panelId;
+      panel.setAttribute('aria-hidden', 'true');
+      const inner = document.createElement('div');
+      inner.className = 'quarter-panel-inner';
+      const list = document.createElement('div');
+      list.className = 'quarter-topic-list';
+      const seen = new Set();
+      quarterRows.forEach(row => {
+        const strong = row.querySelector('strong');
+        const match = strong?.textContent.match(/\bM(\d+)\b/);
+        if (!match || seen.has(match[1])) return;
+        seen.add(match[1]);
+        const link = document.createElement('a');
+        link.className = 'quarter-topic module-topic';
+        link.href = scheduleResourceHref(grade, 'schedule', match[1]);
+        const copy = document.createElement('span');
+        copy.className = 'module-topic-copy';
+        const number = document.createElement('strong');
+        number.textContent = `Module ${match[1]}`;
+        const name = document.createElement('span');
+        name.className = 'module-topic-title';
+        name.textContent = row.querySelector('span:nth-child(2)')?.textContent.trim() || `Module ${match[1]}`;
+        copy.append(number, name);
+        link.append(copy);
+        list.append(link);
+      });
+      inner.append(list);
+      panel.append(inner);
+      toggle.addEventListener('click', () => {
+        const open = toggle.getAttribute('aria-expanded') !== 'true';
+        toggle.setAttribute('aria-expanded', String(open));
+        section.classList.toggle('is-open', open);
+        panel.setAttribute('aria-hidden', String(!open));
+        panel.querySelectorAll('a').forEach(link => { link.tabIndex = open ? 0 : -1; });
+      });
+      panel.querySelectorAll('a').forEach(link => { link.tabIndex = -1; });
+      section.append(toggle, panel);
+      groups.append(section);
+    });
+    nav.append(groups);
+    return nav;
+  }
+
+  function installScheduleWorkspace() {
+    const main = document.querySelector('.all-schedule-layout');
+    const sidebar = main?.querySelector('.schedule-nav');
+    const content = main?.querySelector('.calendar-content');
+    if (!main || !sidebar || !content) return;
+    const route = readScheduleRoute();
+    const activeNavKey = `${route.grade}:${route.view}`;
+    if (sidebar.dataset.workspaceKey !== activeNavKey) {
+      sidebar.replaceChildren(makeScheduleGradePicker(route.grade), makeScheduleResourceNav(route.grade, route.view));
+      const moduleNav = makeScheduleModuleNav(main, route.grade);
+      if (moduleNav) sidebar.append(moduleNav);
+      sidebar.dataset.workspaceKey = activeNavKey;
+    }
+    main.querySelector('.schedule-masthead .grade-resources')?.remove();
+    const scheduleParts = ['.schedule-masthead','.schedule-status-row','.schedule-tools','.schedule-admin','.schedule-timeline','.completion-list'];
+    scheduleParts.forEach(selector => { const element = main.querySelector(selector); if (element) element.hidden = route.view !== 'schedule'; });
+    let resourcePage = content.querySelector('.resource-view-content');
+    if (route.view === 'schedule') {
+      resourcePage?.remove();
+      const moduleNumber = route.module;
+      if (moduleNumber && main.dataset.selectedModuleRoute !== `${route.grade}:${moduleNumber}`) {
+        const row = [...main.querySelectorAll(`.completion-table .completion-row.grade-${route.grade}`)].find(item => new RegExp(`\\bM${moduleNumber}\\b`).test(item.querySelector('strong')?.textContent || ''));
+        const date = row?.querySelector('time')?.textContent.trim();
+        const day = date && [...main.querySelectorAll('.schedule-day')].find(item => item.querySelector('time')?.textContent.trim() === date);
+        if (day) { day.click(); day.scrollIntoView({ block: 'start', behavior: 'smooth' }); }
+        main.dataset.selectedModuleRoute = `${route.grade}:${moduleNumber}`;
+      }
+      return;
+    }
+    main.dataset.selectedModuleRoute = '';
+    if (!resourcePage) {
+      resourcePage = document.createElement('section');
+      resourcePage.className = 'resource-view-content';
+      content.prepend(resourcePage);
+    }
+    const resourceKey = `${route.grade}:${route.view}`;
+    if (resourcePage.dataset.resourceKey === resourceKey) return;
+    resourcePage.dataset.resourceKey = resourceKey;
+    const urls = {
+      pacing: `https://docs.google.com/spreadsheets/d/1u6pRTJXXx3qgLb7qBQ6iXDo6XjYNA0kCdXw_U8dNrag/preview?gid=${({6:'84160990',7:'934147095',8:'1937787038'})[route.grade]}&rm=minimal`,
+      directory: `https://legacyaz.schoology.com/course/7836596606/materials?f=${({6:'1040451133',7:'1040451441',8:'1040758396'})[route.grade]}`,
+      reteach: `https://legacyaz.schoology.com/page/${({6:'8559988197',7:'8559989915',8:'8562135902'})[route.grade]}`
+    };
+    resourcePage.replaceChildren();
+    const heading = document.createElement('header');
+    heading.className = 'resource-page-heading';
+    const eyebrow = document.createElement('p');
+    eyebrow.className = 'calendar-eyebrow';
+    eyebrow.textContent = `Grade ${route.grade} resource`;
+    const title = document.createElement('h1');
+    title.textContent = resourceLabels[route.view];
+    heading.append(eyebrow, title);
+    const frameWrap = document.createElement('div');
+    frameWrap.className = 'embedded-resource';
+    const frame = document.createElement('iframe');
+    frame.title = `Grade ${route.grade} ${resourceLabels[route.view]}`;
+    frame.loading = 'lazy';
+    frame.referrerPolicy = 'strict-origin-when-cross-origin';
+    frame.src = urls[route.view];
+    const fallback = document.createElement('a');
+    fallback.href = urls[route.view];
+    fallback.target = '_blank';
+    fallback.rel = 'noreferrer';
+    fallback.textContent = `Open ${resourceLabels[route.view]} in a new tab`;
+    frameWrap.append(frame, fallback);
+    resourcePage.append(heading, frameWrap);
+  }
+
   function installScheduleDefaults() {
     const main = document.querySelector('.all-schedule-layout');
-    if (!main) return;
+    if (!main || readScheduleRoute().view !== 'schedule') return;
     const switcher = main.querySelector('.schedule-switcher');
     if (switcher && main.dataset.defaultGradeViewApplied !== 'true') {
       const allGrades = [...switcher.querySelectorAll('button')].find(button => button.textContent.trim().toLowerCase() === 'all grades');
@@ -325,11 +537,16 @@
   const observer = new MutationObserver(() => {
     installCalendarMonths();
     installCourseLayouts();
+    installIntegratedResourceLinks();
+    installScheduleWorkspace();
     installScheduleDefaults();
   });
   observer.observe(document.documentElement, { childList: true, subtree: true });
   installCalendarMonths();
   installCourseLayouts();
+  installIntegratedResourceLinks();
+  installScheduleWorkspace();
   installScheduleDefaults();
+  window.addEventListener('hashchange', () => { installIntegratedResourceLinks(); installScheduleWorkspace(); installScheduleDefaults(); });
 })();
 
