@@ -41,3 +41,13 @@
 .completion-list .completion-table{max-height:30rem;overflow:auto}.completion-list .completion-header{position:sticky;top:0;z-index:2}.completion-list .completion-row{grid-template-columns:minmax(9rem,.8fr) minmax(0,1.5fr) 6.5rem}
 @media(max-width:1000px){.schedule-timeline{grid-template-columns:minmax(0,1fr)}.schedule-selection{grid-column:1;grid-row:auto}.schedule-timeline .calendar-weekdays,.schedule-timeline .schedule-days{grid-column:1}}
 @media(max-width:760px){.schedule-masthead{display:grid;grid-template-columns:minmax(0,1fr)}.schedule-masthead h1,.schedule-masthead .grade-resources,.schedule-masthead .schedule-switcher{grid-column:1}.schedule-masthead .grade-resources{justify-content:flex-start}.schedule-masthead .schedule-switcher{margin:0}.schedule-status-row{flex-direction:row;flex-wrap:wrap}.schedule-status-row .today-tracker{flex:1 1 13rem}.selected-day-status{flex:1 1 13rem;min-width:0}.schedule-tools{justify-content:flex-start}.schedule-timeline{padding:.7rem}.schedule-day{min-height:5.8rem;padding:.35rem}.schedule-day>b{margin:-.35rem -.35rem .1rem}.schedule-day span{font-size:.57rem}.completion-list .completion-row{grid-template-columns:minmax(0,1fr);gap:.2rem}.completion-list .completion-header{display:none}.completion-list .completion-row time{text-align:left}}
+
+/* Show surrounding weeks in a compact calendar centered on today. */
+.schedule-days.real-calendar{display:flex;min-height:22rem;max-height:min(34rem,62vh);flex-direction:column;gap:.4rem;overflow-y:auto;overscroll-behavior:contain;scroll-behavior:smooth;scrollbar-gutter:stable}
+.schedule-week{display:grid;flex:0 0 auto;grid-template-columns:repeat(5,minmax(0,1fr));border-left:1px solid #c9d3dc}
+.schedule-week.is-current-week{border-top:3px solid #ae4136;box-shadow:inset 0 0 0 1px #ae4136}
+.schedule-week.is-current-week .schedule-day{background-color:#fff9eb}
+.schedule-day.is-past{opacity:.42;filter:grayscale(.22)}
+.schedule-day.is-past.is-muted{opacity:.26}
+.schedule-day.is-past:hover,.schedule-day.is-past:focus-visible,.schedule-day.is-past.is-selected{opacity:.74}
+@media(max-width:760px){.schedule-days.real-calendar{min-height:19rem;max-height:58vh}}
