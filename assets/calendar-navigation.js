@@ -170,16 +170,114 @@
     source.replaceWith(nav);
   }
 
-  function installGrade6Layout() {
-    const main = document.querySelector('.course-layout.g6:not(.calendar-layout)');
+  function installGrade7and8Modules(main) {
+    const sidebar = main.querySelector('.course-nav');
+    if (!sidebar || sidebar.querySelector('.module-quarter-disclosures')) return;
+    const isSeven = main.classList.contains('g7');
+    const grade = isSeven ? 'g7' : 'g8';
+    const quarters = [...main.querySelectorAll('.map-content > .quarter')];
+    if (!quarters.length) return;
+    const nav = document.createElement('nav');
+    nav.className = 'course-nav-links';
+    nav.setAttribute('aria-label', `Grade ${isSeven ? 7 : 8} course modules`);
+    const groups = document.createElement('div');
+    groups.className = 'quarter-disclosures module-quarter-disclosures';
+    const label = document.createElement('span');
+    label.className = 'nav-section';
+    label.textContent = 'Course modules';
+    groups.append(label);
+    let number = 0;
+    quarters.forEach((quarter, quarterIndex) => {
+      const section = document.createElement('section');
+      section.className = 'quarter-disclosure';
+      const panelId = `${grade}-module-list-${quarterIndex + 1}`;
+      const toggle = document.createElement('button');
+      toggle.type = 'button';
+      toggle.className = 'quarter-toggle';
+      toggle.setAttribute('aria-expanded', 'false');
+      toggle.setAttribute('aria-controls', panelId);
+      const quarterName = document.createElement('span');
+      quarterName.textContent = quarter.querySelector('.sheet > header span')?.textContent.trim() || `Quarter ${quarterIndex + 1}`;
+      const arrow = document.createElement('span');
+      arrow.className = 'material-symbols-outlined quarter-chevron';
+      arrow.setAttribute('aria-hidden', 'true');
+      arrow.textContent = 'expand_more';
+      toggle.append(quarterName, arrow);
+      const panel = document.createElement('div');
+      panel.className = 'quarter-panel';
+      panel.id = panelId;
+      panel.setAttribute('aria-hidden', 'true');
+      const inner = document.createElement('div');
+      inner.className = 'quarter-panel-inner';
+      const list = document.createElement('div');
+      list.className = 'quarter-topic-list';
+      const cards = [...quarter.querySelectorAll(isSeven ? '.g7-lesson' : '.assignment-lesson, .folder-lesson')];
+      cards.forEach(card => {
+        number += 1;
+        card.id = `${grade}m${number}`;
+        const rawTitle = (isSeven ? card.querySelector('.g6-lesson-title span:first-child') : card.querySelector('.lesson-heading a'))?.textContent.trim() || `Module ${number}`;
+        const titleText = rawTitle.includes('|') ? rawTitle.split('|').pop().trim() : rawTitle;
+        const link = document.createElement('a');
+        link.className = 'quarter-topic module-topic';
+        link.href = `#${card.id}`;
+        link.tabIndex = -1;
+        const copy = document.createElement('span');
+        copy.className = 'module-topic-copy';
+        const module = document.createElement('strong');
+        module.textContent = `Module ${number}`;
+        const title = document.createElement('span');
+        title.className = 'module-topic-title';
+        title.textContent = titleText;
+        copy.append(module, title);
+        link.append(copy);
+        list.append(link);
+      });
+      inner.append(list);
+      panel.append(inner);
+      toggle.addEventListener('click', () => {
+        const open = toggle.getAttribute('aria-expanded') !== 'true';
+        if (open && window.matchMedia('(max-width: 900px)').matches) {
+          groups.querySelectorAll('.quarter-toggle[aria-expanded="true"]').forEach(other => {
+            other.setAttribute('aria-expanded', 'false');
+            other.closest('.quarter-disclosure')?.classList.remove('is-open');
+            const otherPanel = document.getElementById(other.getAttribute('aria-controls'));
+            if (otherPanel) { otherPanel.setAttribute('aria-hidden', 'true'); otherPanel.querySelectorAll('a').forEach(link => { link.tabIndex = -1; }); }
+          });
+        }
+        toggle.setAttribute('aria-expanded', String(open));
+        section.classList.toggle('is-open', open);
+        panel.setAttribute('aria-hidden', String(!open));
+        panel.querySelectorAll('a').forEach(link => { link.tabIndex = open ? 0 : -1; });
+      });
+      section.append(toggle, panel);
+      groups.append(section);
+    });
+    nav.append(groups);
+    sidebar.append(nav);
+  }
+
+  function installCourseLayouts() {
+    const main = document.querySelector('.course-layout.g6:not(.calendar-layout), .course-layout.g7, .course-layout.g8, #g8.course-layout');
     if (!main) return;
     const sidebar = main.querySelector('.course-nav');
     const content = main.querySelector('.map-content');
     if (!sidebar || !content) return;
-    installGrade6Modules(main);
+    const isGrade6 = main.classList.contains('g6');
+    if (isGrade6) installGrade6Modules(main);
+    else installGrade7and8Modules(main);
     const masthead = content.querySelector(':scope > .masthead');
     const resources = masthead?.querySelector('.grade-resources');
-    const filterMenu = masthead?.querySelector('.g6-filter-menu');
+    let filterMenu = masthead?.querySelector('.g6-filter-menu');
+    if (!filterMenu && !isGrade6) {
+      const filter = masthead?.querySelector('.course-filter');
+      if (filter) {
+        filterMenu = document.createElement('details');
+        filterMenu.className = 'g6-filter-menu';
+        const summary = document.createElement('summary');
+        summary.innerHTML = '<span class="material-symbols-outlined" aria-hidden="true">tune</span><span>Filters</span><span class="material-symbols-outlined filter-chevron" aria-hidden="true">expand_more</span>';
+        filterMenu.append(summary, filter);
+      }
+    }
     if (resources && !sidebar.contains(resources)) {
       const moduleNav = sidebar.querySelector('.course-nav-links, .module-quarter-disclosures');
       sidebar.insertBefore(resources, moduleNav || null);
@@ -191,14 +289,16 @@
       const firstQuarter = content.querySelector(':scope > .quarter');
       content.insertBefore(row, firstQuarter || null);
     }
+    if (filterMenu && filterMenu.parentElement === masthead) filterMenu.remove();
     masthead?.remove();
   }
 
   const observer = new MutationObserver(() => {
     installCalendarMonths();
-    installGrade6Layout();
+    installCourseLayouts();
   });
   observer.observe(document.documentElement, { childList: true, subtree: true });
   installCalendarMonths();
-  installGrade6Layout();
+  installCourseLayouts();
 })();
+
