@@ -73,3 +73,6 @@
 .schedule-view-toggle button[aria-pressed=true]{color:#fffdf6;background:#10243d}
 .schedule-view-toggle .material-symbols-outlined{font-size:1rem}
 @media(max-width:760px){.schedule-days.real-calendar{max-height:43vh}.schedule-day{min-height:4.6rem}.schedule-day span{font-size:.48rem}}
+
+.schedule-list-mode .completion-list,.schedule-list-mode .completion-disclosure,.schedule-list-mode .completion-table{max-height:none!important;overflow:visible!important}
+.schedule-list-mode .schedule-timeline{margin-bottom:.6rem;padding-bottom:.7rem}
