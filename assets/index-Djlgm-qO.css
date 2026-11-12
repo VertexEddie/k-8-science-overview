@@ -127,3 +127,12 @@
 .schedule-selection{padding:.5rem}
 .schedule-selection .calendar-module{margin-block:.28rem;padding:.34rem}
 @media(max-width:760px){.schedule-days.real-calendar{height:min(24rem,54vh);max-height:min(24rem,54vh)}.schedule-day{min-height:4.25rem}}
+
+/* Fixed-height day cells expose a full five-week window without losing labels. */
+.schedule-days.real-calendar{grid-auto-rows:4rem}
+.schedule-day{height:4rem;min-height:0;gap:.04rem;padding:.2rem;overflow:hidden}
+.schedule-day time{font-size:.57rem;line-height:1}
+.schedule-day span{max-width:100%;padding:.03rem .09rem;font-size:.46rem;line-height:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.schedule-day .item-status-mark{width:.62rem;height:.62rem;font-size:.46rem}
+.schedule-day .completion-mark{top:.18rem;right:.18rem;width:.9rem;height:.9rem}
+.schedule-day .completion-mark .material-symbols-outlined{font-size:.68rem}
