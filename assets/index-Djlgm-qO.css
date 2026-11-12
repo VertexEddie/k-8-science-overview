@@ -136,3 +136,21 @@
 .schedule-day .item-status-mark{width:.62rem;height:.62rem;font-size:.46rem}
 .schedule-day .completion-mark{top:.18rem;right:.18rem;width:.9rem;height:.9rem}
 .schedule-day .completion-mark .material-symbols-outlined{font-size:.68rem}
+
+/* Tighten the schedule chrome so five weeks fit above the fold. */
+.schedule-masthead{gap:.22rem .8rem;padding-block:.3rem}
+.schedule-status-row .today-tracker{min-height:2.7rem;padding:.38rem .75rem;gap:.45rem}
+.selected-day-status{gap:0;padding:.34rem .58rem}
+.schedule-tools{margin-block:.08rem .25rem}
+.schedule-tools .admin-toggle{padding:.28rem .5rem;font-size:.66rem}
+.schedule-tools .admin-toggle .material-symbols-outlined{font-size:.88rem}
+.schedule-timeline{margin-block:.45rem;padding:.55rem;gap:.42rem}
+.schedule-heading h2{font-size:1.05rem}
+.schedule-key{margin-top:.1rem;font-size:.64rem}
+.schedule-view-toggle{margin-top:.2rem}
+.schedule-view-toggle button{padding:.22rem .42rem;font-size:.62rem}
+.schedule-timeline .calendar-weekdays span{padding-block:.26rem}
+.schedule-days.real-calendar{grid-auto-rows:3.75rem}
+.schedule-day{height:3.75rem}
+.schedule-day span{font-size:.44rem}
+@media(max-width:760px){.schedule-masthead{padding-block:.26rem}.schedule-status-row .today-tracker{min-height:2.5rem}}
