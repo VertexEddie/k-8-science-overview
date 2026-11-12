@@ -101,3 +101,13 @@
 .schedule-masthead .grade-resources .material-symbols-outlined{flex:0 0 1rem;font-size:1rem}
 @media(max-width:900px){.schedule-masthead{grid-template-columns:minmax(0,1fr)}.schedule-masthead h1,.schedule-masthead .schedule-switcher,.schedule-masthead .grade-resources{grid-column:1}.schedule-masthead .schedule-switcher{grid-row:2;justify-content:flex-start}.schedule-masthead .grade-resources{grid-row:3}}
 @media(max-width:620px){.schedule-masthead .grade-resources{grid-template-columns:repeat(2,minmax(0,max-content))}.schedule-masthead .grade-resources a{white-space:normal}}
+
+/* Final small reduction to the schedule toolbar. */
+:root{font-size:14px}
+.schedule-masthead{gap:.35rem .8rem;padding-block:.5rem}
+.schedule-masthead h1{font-size:clamp(1.25rem,2vw,1.6rem)}
+.schedule-masthead .schedule-switcher{gap:.2rem}
+.schedule-masthead .schedule-switcher button{padding:.29rem .4rem;font-size:.59rem}
+.schedule-masthead .grade-resources{gap:.25rem}
+.schedule-masthead .grade-resources a{min-height:1.85rem;padding:.27rem .4rem;font-size:.59rem}
+.schedule-masthead .grade-resources .material-symbols-outlined{flex-basis:.95rem;font-size:.95rem}
