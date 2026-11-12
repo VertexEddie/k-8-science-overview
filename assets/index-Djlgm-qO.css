@@ -86,3 +86,6 @@
 .schedule-selection .calendar-module strong{font-size:.68rem}
 .schedule-selection .calendar-module span{font-size:.63rem}
 .all-schedule-layout:not(.is-editing) .item-status-controls,.all-schedule-layout:not(.is-editing) .selection-completion{display:none}
+
+@media(min-width:761px){.schedule-timeline{grid-template-columns:minmax(0,1fr) minmax(7.5rem,.15fr)}.schedule-selection{grid-column:2;grid-row:2/span 2}}
+@media(max-width:760px){.schedule-timeline{grid-template-columns:minmax(0,1fr)}.schedule-selection{grid-column:1;grid-row:auto}}
