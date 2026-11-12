@@ -5,6 +5,7 @@
     return new Date(year, month - 1, 1).toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
   };
   const label = date => date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+  const localMonthKey = date => `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}`;
 
   function install() {
     const heading = document.querySelector('.schedule-heading');
@@ -34,7 +35,7 @@
     const instructions = heading.querySelector('.schedule-key');
     if (instructions) instructions.textContent = 'Use the arrows to move month by month, or scroll through nearby weeks.';
 
-    let activeMonth = months.includes(new Date().toISOString().slice(0, 7)) ? new Date().toISOString().slice(0, 7) : months[0];
+    let activeMonth = months.includes(localMonthKey(new Date())) ? localMonthKey(new Date()) : months[0];
     const dayFor = date => [...calendar.querySelectorAll('.schedule-day')].find(cell => cell.querySelector('time')?.textContent.trim() === label(date));
     const scrollTo = date => {
       const cell = dayFor(date);
@@ -62,7 +63,7 @@
     next.addEventListener('click', () => goMonth(1));
     todayButton.addEventListener('click', () => {
       const today = new Date();
-      const key = today.toISOString().slice(0, 7);
+      const key = localMonthKey(today);
       activeMonth = months.includes(key) ? key : months[months.length - 1];
       updateControls();
       const cell = dayFor(today);
@@ -72,8 +73,9 @@
     calendar.addEventListener('scroll', () => {
       cancelAnimationFrame(frame);
       frame = requestAnimationFrame(() => {
-        const top = calendar.getBoundingClientRect().top;
-        const first = [...calendar.querySelectorAll('.schedule-day')].find(cell => cell.getBoundingClientRect().bottom > top + 2);
+        const bounds = calendar.getBoundingClientRect();
+        const center = bounds.top + bounds.height / 2;
+        const first = [...calendar.querySelectorAll('.schedule-day')].find(cell => cell.getBoundingClientRect().top <= center && cell.getBoundingClientRect().bottom >= center);
         const dateText = first?.querySelector('time')?.textContent.trim();
         if (dateText) {
           const date = new Date(`${dateText} 2026`);
@@ -86,7 +88,7 @@
     return true;
   }
 
-  const observer = new MutationObserver(() => { if (install()) observer.disconnect(); });
+  const observer = new MutationObserver(() => { install(); });
   observer.observe(document.documentElement, { childList: true, subtree: true });
   install();
 })();
