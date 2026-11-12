@@ -178,3 +178,7 @@
 .schedule-view-toggle{margin-top:.1rem}
 .schedule-view-toggle button{padding:.18rem .34rem;font-size:.58rem}
 .schedule-timeline .calendar-weekdays span{padding-block:.2rem}
+
+/* Keep the entire five-week scroll window in view. */
+.schedule-days.real-calendar{height:18.75rem;max-height:18.75rem}
+@media(max-width:760px){.schedule-days.real-calendar{height:min(18.75rem,56vh);max-height:min(18.75rem,56vh)}}
