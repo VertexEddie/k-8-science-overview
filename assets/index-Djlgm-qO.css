@@ -56,3 +56,20 @@
 /* Keep the five-day grid intact while scrolling around the current week. */
 .schedule-days.real-calendar{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));align-content:start;min-height:22rem;max-height:min(34rem,62vh);overflow-y:auto;overscroll-behavior:contain;scroll-behavior:auto;scrollbar-gutter:stable}
 @media(max-width:760px){.schedule-days.real-calendar{min-height:19rem;max-height:58vh}}
+
+
+/* Calendar and list are alternate modes, never simultaneous scroll panels. */
+.completion-list{display:none}
+.schedule-list-mode .completion-list{display:block}
+.schedule-list-mode .schedule-days.real-calendar,.schedule-list-mode .calendar-weekdays,.schedule-list-mode .schedule-selection{display:none!important}
+.schedule-list-mode .schedule-timeline{grid-template-columns:minmax(0,1fr)}
+.schedule-days.real-calendar{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));align-content:start;min-height:0;max-height:min(21rem,48vh);overflow-y:auto;overscroll-behavior:contain;scrollbar-gutter:stable}
+.schedule-day{min-height:5rem;gap:.12rem;padding:.32rem}
+.schedule-day time{font-size:.64rem}
+.schedule-day span{padding:.08rem .16rem;font-size:.54rem;line-height:1.1}
+.schedule-day em{font-size:.55rem}
+.schedule-view-toggle{display:inline-flex;gap:.2rem;margin-top:.7rem;padding:.2rem;border:1px solid #aab8c4;border-radius:.45rem;background:#edf3f8}
+.schedule-view-toggle button{display:inline-flex;align-items:center;gap:.32rem;padding:.38rem .62rem;border:0;border-radius:.3rem;color:#31475b;background:transparent;font:inherit;font-size:.74rem;font-weight:800;cursor:pointer}
+.schedule-view-toggle button[aria-pressed=true]{color:#fffdf6;background:#10243d}
+.schedule-view-toggle .material-symbols-outlined{font-size:1rem}
+@media(max-width:760px){.schedule-days.real-calendar{max-height:43vh}.schedule-day{min-height:4.6rem}.schedule-day span{font-size:.48rem}}
