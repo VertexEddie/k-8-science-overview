@@ -7,10 +7,10 @@
   const label = date => date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
   const localMonthKey = date => `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}`;
 
-  function install() {
+  function installCalendarMonths() {
     const heading = document.querySelector('.schedule-heading');
     const calendar = document.querySelector('.schedule-days.real-calendar');
-    if (!heading || !calendar || heading.querySelector('.calendar-month-nav')) return false;
+    if (!heading || !calendar || heading.querySelector('.calendar-month-nav')) return;
     const oldTitle = heading.querySelector('h2');
     const monthNav = document.createElement('div');
     monthNav.className = 'calendar-month-nav';
@@ -75,8 +75,8 @@
       frame = requestAnimationFrame(() => {
         const bounds = calendar.getBoundingClientRect();
         const center = bounds.top + bounds.height / 2;
-        const first = [...calendar.querySelectorAll('.schedule-day')].find(cell => cell.getBoundingClientRect().top <= center && cell.getBoundingClientRect().bottom >= center);
-        const dateText = first?.querySelector('time')?.textContent.trim();
+        const centered = [...calendar.querySelectorAll('.schedule-day')].find(cell => cell.getBoundingClientRect().top <= center && cell.getBoundingClientRect().bottom >= center);
+        const dateText = centered?.querySelector('time')?.textContent.trim();
         if (dateText) {
           const date = new Date(`${dateText} 2026`);
           const key = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
@@ -85,10 +85,116 @@
       });
     }, { passive: true });
     updateControls();
-    return true;
   }
 
-  const observer = new MutationObserver(() => { install(); });
+  function installGrade6Modules(main) {
+    const sidebar = main.querySelector('.course-nav');
+    if (!sidebar || sidebar.querySelector('.module-quarter-disclosures')) return;
+    const source = sidebar.querySelector('.module-index');
+    const select = source?.querySelector('select');
+    if (!select) return;
+    const nav = document.createElement('nav');
+    nav.className = 'course-nav-links';
+    nav.setAttribute('aria-label', 'Grade 6 course modules');
+    const groups = document.createElement('div');
+    groups.className = 'quarter-disclosures module-quarter-disclosures';
+    const label = document.createElement('span');
+    label.className = 'nav-section';
+    label.textContent = 'Course modules';
+    groups.append(label);
+    [...select.querySelectorAll('optgroup')].forEach((group, index) => {
+      const section = document.createElement('section');
+      section.className = 'quarter-disclosure';
+      const panelId = `g6-module-list-${index + 1}`;
+      const toggle = document.createElement('button');
+      toggle.type = 'button';
+      toggle.className = 'quarter-toggle';
+      toggle.setAttribute('aria-expanded', 'false');
+      toggle.setAttribute('aria-controls', panelId);
+      const quarterName = document.createElement('span');
+      quarterName.textContent = group.label;
+      const arrow = document.createElement('span');
+      arrow.className = 'material-symbols-outlined quarter-chevron';
+      arrow.setAttribute('aria-hidden', 'true');
+      arrow.textContent = 'expand_more';
+      toggle.append(quarterName, arrow);
+      const panel = document.createElement('div');
+      panel.className = 'quarter-panel';
+      panel.id = panelId;
+      panel.setAttribute('aria-hidden', 'true');
+      const inner = document.createElement('div');
+      inner.className = 'quarter-panel-inner';
+      const list = document.createElement('div');
+      list.className = 'quarter-topic-list';
+      [...group.querySelectorAll('option')].forEach(option => {
+        const link = document.createElement('a');
+        link.className = 'quarter-topic';
+        link.href = `#${option.value}`;
+        link.tabIndex = -1;
+        const icon = document.createElement('span');
+        icon.className = 'material-symbols-outlined';
+        icon.setAttribute('aria-hidden', 'true');
+        icon.textContent = 'science';
+        const text = option.textContent.trim().replace(/^M(\d+)\s*·\s*/, 'Module $1 · ');
+        link.append(icon, document.createTextNode(text));
+        list.append(link);
+      });
+      inner.append(list);
+      panel.append(inner);
+      toggle.addEventListener('click', () => {
+        const open = toggle.getAttribute('aria-expanded') !== 'true';
+        if (open && window.matchMedia('(max-width: 900px)').matches) {
+          groups.querySelectorAll('.quarter-toggle[aria-expanded="true"]').forEach(other => {
+            other.setAttribute('aria-expanded', 'false');
+            other.closest('.quarter-disclosure')?.classList.remove('is-open');
+            const otherPanel = document.getElementById(other.getAttribute('aria-controls'));
+            if (otherPanel) {
+              otherPanel.setAttribute('aria-hidden', 'true');
+              otherPanel.querySelectorAll('a').forEach(link => { link.tabIndex = -1; });
+            }
+          });
+        }
+        toggle.setAttribute('aria-expanded', String(open));
+        section.classList.toggle('is-open', open);
+        panel.setAttribute('aria-hidden', String(!open));
+        panel.querySelectorAll('a').forEach(link => { link.tabIndex = open ? 0 : -1; });
+      });
+      section.append(toggle, panel);
+      groups.append(section);
+    });
+    nav.append(groups);
+    source.replaceWith(nav);
+  }
+
+  function installGrade6Layout() {
+    const main = document.querySelector('.course-layout.g6:not(.calendar-layout)');
+    if (!main) return;
+    const sidebar = main.querySelector('.course-nav');
+    const content = main.querySelector('.map-content');
+    if (!sidebar || !content) return;
+    installGrade6Modules(main);
+    const masthead = content.querySelector(':scope > .masthead');
+    const resources = masthead?.querySelector('.grade-resources');
+    const filterMenu = masthead?.querySelector('.g6-filter-menu');
+    if (resources && !sidebar.contains(resources)) {
+      const moduleNav = sidebar.querySelector('.course-nav-links, .module-quarter-disclosures');
+      sidebar.insertBefore(resources, moduleNav || null);
+    }
+    if (filterMenu && !content.querySelector(':scope > .g6-filter-row')) {
+      const row = document.createElement('div');
+      row.className = 'g6-filter-row';
+      row.append(filterMenu);
+      const firstQuarter = content.querySelector(':scope > .quarter');
+      content.insertBefore(row, firstQuarter || null);
+    }
+    masthead?.remove();
+  }
+
+  const observer = new MutationObserver(() => {
+    installCalendarMonths();
+    installGrade6Layout();
+  });
   observer.observe(document.documentElement, { childList: true, subtree: true });
-  install();
+  installCalendarMonths();
+  installGrade6Layout();
 })();
