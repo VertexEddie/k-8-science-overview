@@ -51,3 +51,8 @@
 .schedule-day.is-past.is-muted{opacity:.26}
 .schedule-day.is-past:hover,.schedule-day.is-past:focus-visible,.schedule-day.is-past.is-selected{opacity:.74}
 @media(max-width:760px){.schedule-days.real-calendar{min-height:19rem;max-height:58vh}}
+
+
+/* Keep the five-day grid intact while scrolling around the current week. */
+.schedule-days.real-calendar{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));align-content:start;min-height:22rem;max-height:min(34rem,62vh);overflow-y:auto;overscroll-behavior:contain;scroll-behavior:auto;scrollbar-gutter:stable}
+@media(max-width:760px){.schedule-days.real-calendar{min-height:19rem;max-height:58vh}}
