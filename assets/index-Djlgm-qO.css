@@ -228,3 +228,13 @@
 .embedded-resource>a{width:fit-content;color:#164d77;font-size:.76rem;font-weight:700}
 @media(max-width:900px){.all-schedule-layout .schedule-nav{display:grid;grid-template-columns:minmax(10rem,.85fr) minmax(10rem,1fr);align-items:start;gap:.6rem}.schedule-nav .grade-picker{grid-column:1}.schedule-nav .grade-resources{grid-column:2;grid-row:1}.schedule-nav .course-nav-links{grid-column:1/-1}.embedded-resource iframe{min-height:28rem;height:68vh}}
 @media(max-width:620px){.all-schedule-layout .schedule-nav{grid-template-columns:1fr}.schedule-nav .grade-picker,.schedule-nav .grade-resources,.schedule-nav .course-nav-links{grid-column:1;grid-row:auto}.schedule-nav .grade-resources{grid-template-columns:repeat(2,minmax(0,1fr))}.embedded-resource iframe{min-height:24rem;height:62vh}}
+
+
+/* Explicitly suppress the calendar's author display styles in resource mode. */
+.all-schedule-layout [hidden]{display:none!important}
+.schoology-resource-card{display:flex;align-items:center;gap:1rem;max-width:50rem;padding:1.1rem;border:1px solid #b7c4cc;border-left:4px solid #4c8a63;border-radius:.45rem;background:#fffdf6;box-shadow:3px 3px 0 #10243d}
+.schoology-resource-card>.material-symbols-outlined{flex:0 0 auto;color:#4c8a63;font-size:1.7rem}
+.schoology-resource-card strong{display:block;color:#10243d;font-size:.95rem}
+.schoology-resource-card p{margin:.25rem 0 0;color:#526779;font-size:.78rem}
+.schoology-resource-card a{flex:0 0 auto;padding:.55rem .75rem;border-radius:.32rem;color:#fffdf6;background:#173e5d;font-size:.73rem;font-weight:800;text-decoration:none}
+@media(max-width:620px){.schoology-resource-card{align-items:flex-start;flex-wrap:wrap}.schoology-resource-card a{margin-left:2.7rem}}
