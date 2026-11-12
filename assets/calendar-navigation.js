@@ -498,17 +498,35 @@
     heading.append(eyebrow, title);
     const frameWrap = document.createElement('div');
     frameWrap.className = 'embedded-resource';
-    const frame = document.createElement('iframe');
-    frame.title = `Grade ${route.grade} ${resourceLabels[route.view]}`;
-    frame.loading = 'lazy';
-    frame.referrerPolicy = 'strict-origin-when-cross-origin';
-    frame.src = urls[route.view];
     const fallback = document.createElement('a');
     fallback.href = urls[route.view];
     fallback.target = '_blank';
     fallback.rel = 'noreferrer';
-    fallback.textContent = `Open ${resourceLabels[route.view]} in a new tab`;
-    frameWrap.append(frame, fallback);
+    if (route.view === 'pacing') {
+      const frame = document.createElement('iframe');
+      frame.title = `Grade ${route.grade} ${resourceLabels[route.view]}`;
+      frame.loading = 'lazy';
+      frame.referrerPolicy = 'strict-origin-when-cross-origin';
+      frame.src = urls[route.view];
+      fallback.textContent = 'Open Pacing Guide in a new tab';
+      frameWrap.append(frame, fallback);
+    } else {
+      const card = document.createElement('div');
+      card.className = 'schoology-resource-card';
+      const icon = document.createElement('span');
+      icon.className = 'material-symbols-outlined';
+      icon.setAttribute('aria-hidden', 'true');
+      icon.textContent = 'open_in_new';
+      const copy = document.createElement('div');
+      const cardTitle = document.createElement('strong');
+      cardTitle.textContent = `${resourceLabels[route.view]} opens in Schoology`;
+      const note = document.createElement('p');
+      note.textContent = 'Schoology does not allow this page to be embedded here. This link opens the selected grade resource.';
+      fallback.textContent = 'Open in Schoology';
+      copy.append(cardTitle, note);
+      card.append(icon, copy, fallback);
+      frameWrap.append(card);
+    }
     resourcePage.append(heading, frameWrap);
   }
 
