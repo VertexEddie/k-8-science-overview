@@ -195,3 +195,6 @@
 
 /* Put each module number on a line above its title in the Grade 6 rail. */
 .g6 .module-quarter-disclosures .quarter-topic.module-topic{display:block;padding:.3rem .35rem}.g6 .module-topic-copy{display:grid;min-width:0;gap:.08rem}.g6 .module-topic-copy>strong{color:#fffdf6;font-size:.66rem;line-height:1.1}.g6 .module-topic-title{color:#d8e5eb;font-size:.64rem;font-weight:600;line-height:1.18;overflow-wrap:anywhere}
+
+/* Let module labels use the full rail width instead of inheriting icon sizing. */
+.g6 .module-topic-copy{width:100%;grid-template-columns:minmax(0,1fr);place-items:stretch}.g6 .module-topic-copy>strong{white-space:nowrap}.g6 .module-topic-copy>span{display:block;width:auto;min-width:0;text-align:left}
