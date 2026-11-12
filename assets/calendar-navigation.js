@@ -300,12 +300,36 @@
     masthead?.remove();
   }
 
+  function installScheduleDefaults() {
+    const main = document.querySelector('.all-schedule-layout');
+    if (!main) return;
+    const switcher = main.querySelector('.schedule-switcher');
+    if (switcher && main.dataset.defaultGradeViewApplied !== 'true') {
+      const allGrades = [...switcher.querySelectorAll('button')].find(button => button.textContent.trim().toLowerCase() === 'all grades');
+      if (!allGrades) return;
+      if (allGrades.getAttribute('aria-pressed') !== 'true') allGrades.click();
+      main.dataset.defaultGradeViewApplied = 'true';
+    }
+    const calendar = main.querySelector('.schedule-days.real-calendar');
+    const today = calendar?.querySelector('.schedule-day.is-current');
+    if (!calendar || !today || calendar.dataset.currentDatePositioned === 'true') return;
+    calendar.dataset.currentDatePositioned = 'pending';
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      if (!calendar.isConnected || !today.isConnected) return;
+      const top = today.getBoundingClientRect().top - calendar.getBoundingClientRect().top + calendar.scrollTop;
+      calendar.scrollTop = Math.max(0, top);
+      calendar.dataset.currentDatePositioned = 'true';
+    }));
+  }
+
   const observer = new MutationObserver(() => {
     installCalendarMonths();
     installCourseLayouts();
+    installScheduleDefaults();
   });
   observer.observe(document.documentElement, { childList: true, subtree: true });
   installCalendarMonths();
   installCourseLayouts();
+  installScheduleDefaults();
 })();
 
