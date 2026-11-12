@@ -111,3 +111,19 @@
 .schedule-masthead .grade-resources{gap:.25rem}
 .schedule-masthead .grade-resources a{min-height:1.85rem;padding:.27rem .4rem;font-size:.59rem}
 .schedule-masthead .grade-resources .material-symbols-outlined{flex-basis:.95rem;font-size:.95rem}
+
+/* Compact calendar cells and five visible workweeks in the scroll window. */
+.schedule-timeline{gap:.55rem;margin-block:.7rem;padding:.7rem;box-shadow:4px 4px 0 #10243d}
+.schedule-heading h2{font-size:1.12rem}
+.schedule-key{margin-top:.16rem;font-size:.68rem}
+.schedule-view-toggle{margin-top:.35rem}
+.schedule-view-toggle button{padding:.28rem .48rem;font-size:.66rem}
+.schedule-timeline .calendar-weekdays span{padding-block:.32rem;font-size:.66rem}
+.schedule-days.real-calendar{height:min(28rem,62vh);max-height:min(28rem,62vh);min-height:0;grid-auto-rows:minmax(4.5rem,max-content)}
+.schedule-day{min-height:4.5rem;gap:.08rem;padding:.25rem}
+.schedule-day time{font-size:.6rem}
+.schedule-day span{padding:.06rem .12rem;font-size:.5rem;line-height:1.05}
+.schedule-day em{font-size:.52rem}
+.schedule-selection{padding:.5rem}
+.schedule-selection .calendar-module{margin-block:.28rem;padding:.34rem}
+@media(max-width:760px){.schedule-days.real-calendar{height:min(24rem,54vh);max-height:min(24rem,54vh)}.schedule-day{min-height:4.25rem}}
