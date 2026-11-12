@@ -253,7 +253,9 @@
       groups.append(section);
     });
     nav.append(groups);
-    sidebar.append(nav);
+    const oldNav = sidebar.querySelector('.course-nav-links');
+    if (oldNav) oldNav.replaceWith(nav);
+    else sidebar.append(nav);
   }
 
   function installCourseLayouts() {
