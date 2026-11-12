@@ -128,15 +128,19 @@
       list.className = 'quarter-topic-list';
       [...group.querySelectorAll('option')].forEach(option => {
         const link = document.createElement('a');
-        link.className = 'quarter-topic';
+        link.className = 'quarter-topic module-topic';
         link.href = `#${option.value}`;
         link.tabIndex = -1;
-        const icon = document.createElement('span');
-        icon.className = 'material-symbols-outlined';
-        icon.setAttribute('aria-hidden', 'true');
-        icon.textContent = 'science';
-        const text = option.textContent.trim().replace(/^M(\d+)\s*·\s*/, 'Module $1 · ');
-        link.append(icon, document.createTextNode(text));
+        const match = option.textContent.trim().match(/^M(\d+)\s*·\s*(.*)$/u);
+        const copy = document.createElement('span');
+        copy.className = 'module-topic-copy';
+        const number = document.createElement('strong');
+        number.textContent = match ? `Module ${match[1]}` : 'Module';
+        const title = document.createElement('span');
+        title.className = 'module-topic-title';
+        title.textContent = match ? match[2] : option.textContent.trim();
+        copy.append(number, title);
+        link.append(copy);
         list.append(link);
       });
       inner.append(list);
