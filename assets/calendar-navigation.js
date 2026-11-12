@@ -281,6 +281,11 @@
       }
     }
     if (resources && !sidebar.contains(resources)) {
+      resources.querySelectorAll('a').forEach(link => {
+        if (!link.textContent.toLowerCase().includes('reteach')) return;
+        const icon = link.querySelector('.material-symbols-outlined');
+        link.replaceChildren(...(icon ? [icon] : []), document.createTextNode('Reteach & Review'));
+      });
       const moduleNav = sidebar.querySelector('.course-nav-links, .module-quarter-disclosures');
       sidebar.insertBefore(resources, moduleNav || null);
     }
