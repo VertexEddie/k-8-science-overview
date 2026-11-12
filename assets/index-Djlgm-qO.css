@@ -76,3 +76,13 @@
 
 .schedule-list-mode .completion-list,.schedule-list-mode .completion-disclosure,.schedule-list-mode .completion-table{max-height:none!important;overflow:visible!important}
 .schedule-list-mode .schedule-timeline{margin-bottom:.6rem;padding-bottom:.7rem}
+
+
+/* Give the calendar more room and keep edit controls behind the Edit schedule toggle. */
+.schedule-timeline{grid-template-columns:minmax(0,1fr) minmax(7.5rem,.15fr);gap:.75rem}
+.schedule-selection{padding:.65rem}
+.schedule-selection h2{margin:.18rem 0 .45rem;font-size:1.05rem}
+.schedule-selection .calendar-module{padding:.42rem}
+.schedule-selection .calendar-module strong{font-size:.68rem}
+.schedule-selection .calendar-module span{font-size:.63rem}
+.all-schedule-layout:not(.is-editing) .item-status-controls,.all-schedule-layout:not(.is-editing) .selection-completion{display:none}
