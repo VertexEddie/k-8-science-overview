@@ -89,3 +89,15 @@
 
 @media(min-width:761px){.schedule-timeline{grid-template-columns:minmax(0,1fr) minmax(7.5rem,.15fr)}.schedule-selection{grid-column:2;grid-row:2/span 2}}
 @media(max-width:760px){.schedule-timeline{grid-template-columns:minmax(0,1fr)}.schedule-selection{grid-column:1;grid-row:auto}}
+
+/* Compact schedule header: keep the grade title and selector together, with all four resources in a single row. */
+:root{font-size:14.5px}
+.schedule-masthead{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:.45rem 1rem;padding:.65rem clamp(.8rem,2vw,1.5rem)}
+.schedule-masthead h1{grid-column:1;grid-row:1;font-size:clamp(1.35rem,2.2vw,1.75rem);letter-spacing:-.045em;line-height:1.05}
+.schedule-masthead .schedule-switcher{grid-column:2;grid-row:1;flex:0 0 auto;justify-content:flex-end;gap:.25rem}
+.schedule-masthead .schedule-switcher button{padding:.32rem .45rem;font-size:.62rem}
+.schedule-masthead .grade-resources{grid-column:1/-1;grid-row:2;display:grid;grid-template-columns:repeat(4,max-content);justify-content:start;gap:.3rem;width:100%}
+.schedule-masthead .grade-resources a{min-height:2rem;padding:.32rem .48rem;gap:.3rem;font-size:.62rem}
+.schedule-masthead .grade-resources .material-symbols-outlined{flex:0 0 1rem;font-size:1rem}
+@media(max-width:900px){.schedule-masthead{grid-template-columns:minmax(0,1fr)}.schedule-masthead h1,.schedule-masthead .schedule-switcher,.schedule-masthead .grade-resources{grid-column:1}.schedule-masthead .schedule-switcher{grid-row:2;justify-content:flex-start}.schedule-masthead .grade-resources{grid-row:3}}
+@media(max-width:620px){.schedule-masthead .grade-resources{grid-template-columns:repeat(2,minmax(0,max-content))}.schedule-masthead .grade-resources a{white-space:normal}}
