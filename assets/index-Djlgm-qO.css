@@ -182,3 +182,7 @@
 /* Keep the entire five-week scroll window in view. */
 .schedule-days.real-calendar{height:18.75rem;max-height:18.75rem}
 @media(max-width:760px){.schedule-days.real-calendar{height:min(18.75rem,56vh);max-height:min(18.75rem,56vh)}}
+
+/* Give the calendar's own scroll area more vertical room. */
+.schedule-days.real-calendar{height:min(26rem,70vh);max-height:min(26rem,70vh)}
+@media(max-width:760px){.schedule-days.real-calendar{height:min(22rem,62vh);max-height:min(22rem,62vh)}}
