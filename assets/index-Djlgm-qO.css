@@ -246,3 +246,7 @@
 :is(.g8, #g8) .course-question > h2 { display: none; }
 :is(.g8, #g8) .course-question .question-card { display: inline-flex; width: auto; max-width: 100%; margin: 0; padding: .55rem .8rem; box-shadow: none; }
 :is(.g8, #g8) .course-question .activity { flex-direction: row; width: auto; max-width: none; gap: .55rem; text-align: left; }
+
+#g8 .step { display: inline-flex; align-items: center; break-inside: avoid; }
+#g8 .step .arrow { margin-inline: .18rem; }
+#g8 .activity { font-size: .84rem; line-height: 1.22; }
